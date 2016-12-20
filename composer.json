@@ -1,0 +1,24 @@
+{
+  "name": "bigpoint/http-caller-php",
+  "description": "An easy to use wrapper around cURL",
+  "authors": [
+    {
+      "name": "Andreas Schleifer",
+      "email": "aschleifer@bigpoint.net"
+    },
+    {
+      "name": "Peter Ahrens",
+      "email": "pahrens@bigpoint.net"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "ext-curl": "*",
+    "monolog/monolog": "1.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Http\\": ["src/Http/"]
+    }
+  }
+}
