@@ -23,11 +23,18 @@ class Caller
     private $connectionTimeout = 10;
 
     /**
-     * @param Monolog\Logger $logger
+     * @var bool
      */
-    public function __construct(Monolog\Logger $logger)
+    private $verifyTls = true;
+
+    /**
+     * @param Monolog\Logger $logger
+     * @param bool           $verifyTls
+     */
+    public function __construct(Monolog\Logger $logger, $verifyTls = true)
     {
-        $this->logger = $logger;
+        $this->logger    = $logger;
+        $this->verifyTls = $verifyTls;
     }
 
     /**
@@ -190,12 +197,28 @@ class Caller
                 CURLOPT_URL            => $url,
                 CURLOPT_HEADER         => false,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_SSL_VERIFYHOST => 2,
                 CURLOPT_CONNECTTIMEOUT => $this->connectionTimeout,
                 CURLOPT_FOLLOWLOCATION => true,
             )
         );
+
+        if (true === $this->verifyTls) {
+            \curl_setopt_array(
+                $curlHandler,
+                array(
+                    CURLOPT_SSL_VERIFYPEER => true,
+                    CURLOPT_SSL_VERIFYHOST => 2,
+                )
+            );
+        } else {
+            \curl_setopt_array(
+                $curlHandler,
+                array(
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                )
+            );
+        }
 
         if (0 < \count($additionalHeaders)) {
             \curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $additionalHeaders);
