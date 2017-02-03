@@ -63,17 +63,17 @@ class Caller
     }
 
     /**
-     * @param string $url
-     * @param array  $parameters                assoc array with parameter or http_build_query string
-     * @param array  $additionalHeaders
-     * @param bool   $disableCallResultDebugLog
-     * @param int    $logLevelForStatusCode404  Monolog severity values; use Monolog\Logger::WARNING
+     * @param string       $url
+     * @param array|string $parameters                assoc array with parameter or http_build_query string
+     * @param array        $additionalHeaders
+     * @param bool         $disableCallResultDebugLog
+     * @param int          $logLevelForStatusCode404  Monolog severity values; use Monolog\Logger::WARNING
      *
      * @return array
      */
     public function post(
         $url,
-        array $parameters,
+        $parameters,
         array $additionalHeaders = array(),
         $disableCallResultDebugLog = false,
         $logLevelForStatusCode404 = Monolog\Logger::WARNING
