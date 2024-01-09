@@ -57,7 +57,7 @@ class Caller
             $url .= '?' . \http_build_query($parameters);
         }
 
-        $this->logger->addDebug('calling GET: ' . $url);
+        $this->logger->debug('calling GET: ' . $url);
 
         $curlHandler = $this->createCurlHandler($url, $additionalHeaders);
 
@@ -85,7 +85,7 @@ class Caller
         $disableCallResultDebugLog = false,
         $logLevelForStatusCode404 = Monolog\Logger::WARNING
     ) {
-        $this->logger->addDebug(
+        $this->logger->debug(
             'calling POST: ' . $url . ' with parameters ' . var_export($parameters, true)
         );
 
@@ -124,7 +124,7 @@ class Caller
         $disableCallResultDebugLog = false,
         $logLevelForStatusCode404 = Monolog\Logger::WARNING
     ) {
-        $this->logger->addDebug(
+        $this->logger->debug(
             'calling PUT: ' . $url . ' with parameters ' . var_export($parameters, true)
         );
 
@@ -160,7 +160,7 @@ class Caller
         $disableCallResultDebugLog = false,
         $logLevelForStatusCode404 = Monolog\Logger::WARNING
     ) {
-        $this->logger->addDebug(
+        $this->logger->debug(
             'calling DELETE: ' . $url
         );
 
@@ -281,26 +281,26 @@ class Caller
         $afterCall    = \microtime(true);
         $callDuration = $afterCall - $beforeCall;
 
-        $this->logger->addDebug('callDuration: ' . \var_export($callDuration, true) . ' s for url: ' . $url);
+        $this->logger->debug('callDuration: ' . \var_export($callDuration, true) . ' s for url: ' . $url);
 
         if (0 !== $curlErrno) {
-            $this->logger->addError('curl error (' . $curlErrno . '): ' . $curlError . ' url: ' . $url);
+            $this->logger->error('curl error (' . $curlErrno . '): ' . $curlError . ' url: ' . $url);
         }
 
         if (500 <= $responseCode) {
-            $this->logger->addError(
+            $this->logger->error(
                 'curl call error: ' . $responseCode . ' url: ' . $url
             );
         } elseif (300 <= $responseCode) {
             if (404 === $responseCode) {
                 $this->logger->addRecord($logLevelForStatusCode404, 'curl call: ' . $responseCode . ' url: ' . $url);
             } else {
-                $this->logger->addWarning('curl call warning: ' . $responseCode . ' url: ' . $url);
+                $this->logger->warning('curl call warning: ' . $responseCode . ' url: ' . $url);
             }
         }
 
         if (false === $disableCallResultDebugLog) {
-            $this->logger->addDebug('result: (' . $responseCode . ') ' . \var_export($result, true));
+            $this->logger->debug('result: (' . $responseCode . ') ' . \var_export($result, true));
         }
 
         $result = array(
